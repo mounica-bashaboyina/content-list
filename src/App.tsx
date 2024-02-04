@@ -1,6 +1,6 @@
 // App.js
 
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import GridComponent from './GridComponent';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -14,20 +14,18 @@ import Box from '@mui/material/Box';
 
 const darkTheme = createTheme({
   palette: {
-    type: 'dark',
-    background: {
-      default: '#171717', 
-    },
+    mode: 'dark'
   },
 });
 
-const fetchData = async (page) => {
+
+const fetchData = async (page: any) => {
   const response = await fetch(`https://test.create.diagnal.com/data/page${page}.json`);
   return response.json();
 };
 
 function App() {
-  const [pageData, setPageData] = useState([]);
+  const [pageData, setPageData] = useState<any>([]);
   const [pageTitle, setPageTitle] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -36,7 +34,7 @@ function App() {
   const loadMoreData = async () => {
     try {
       const nextPageData = await fetchData(currentPage + 1);
-      setPageData((prevData) => [...prevData, ...nextPageData.page['content-items'].content]);
+      setPageData((prevData: any) => [...prevData, ...nextPageData.page['content-items'].content]);
       setCurrentPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error('Error loading more data:', error);
@@ -48,18 +46,18 @@ function App() {
     fetchData(currentPage)
       .then((data) => {
         setPageTitle(data.page.title);
-        setPageData((prevData) => [...prevData, ...data.page['content-items'].content]);
+        setPageData((prevData: any) => [...prevData, ...data.page['content-items'].content]);
       })
       .catch(() => {
         setHasMore(false);
       });
   }, [currentPage]);
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: any) => {
     setSearchQuery(event.target.value);
   };
 
-  const filteredData = pageData.filter((item) =>
+  const filteredData = pageData.filter((item: any) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase().trim())
   );
 
